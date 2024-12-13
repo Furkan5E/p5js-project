@@ -1,46 +1,35 @@
-let mapData;
-let tileImages = {};
-let tileSize;
-let mapWidth, mapHeight;
+let player = {
+  x: 400,
+  y: 300,
+  speed: 5,
+  health: 100
+};
 
-function preload() {
-  mapData = loadJSON("maps.json");
-
-  // Load images
-  tileImages[0] = loadImage("assets/Dungeon Bricks/BackgroundTile.png");
-  tileImages[1] = loadImage("assets/Dungeon Bricks/Tile.png");
-}
+let score = 0;
+let gameOver = false;
 
 function setup() {
-  // Get the map dimensions
-  mapWidth = mapData.map[0].length;
-  mapHeight = mapData.map.length;
-
-  tileSize = floor(min(windowWidth / mapWidth, windowHeight / mapHeight));
-
-  createCanvas(mapWidth * tileSize, mapHeight * tileSize);
-
-  noSmooth();
-  noLoop();
+  createCanvas(900, 600);
 }
 
 function draw() {
-  background(0);
-
-  // draw tiles
-  for (let y = 0; y < mapData.map.length; y++) {
-    for (let x = 0; x < mapData.map[y].length; x++) {
-      const tileType = mapData.map[y][x];
-      const img = tileImages[tileType];
-      if (img) {
-        image(img, x * tileSize, y * tileSize, tileSize, tileSize);
-      }
-    }
-  }
+  background("#b8b4b4");
+  strokeWeight(3.5);
+  ellipse(player.x, player.y, 40);
+  movePlayer();
 }
 
-function windowResized() {
-  tileSize = floor(min(windowWidth / mapWidth, windowHeight / mapHeight));
-  resizeCanvas(mapWidth * tileSize, mapHeight * tileSize);
-  redraw();
+function movePlayer() {
+  if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
+    player.x -= player.speed;
+  }
+  if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+    player.x += player.speed;
+  }
+  if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
+    player.y -= player.speed;
+  }
+  if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
+    player.y += player.speed;
+  }
 }
