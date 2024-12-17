@@ -57,18 +57,21 @@ function movePlayer() {
 function drawBullets() {
   for (let i = bullets.length-1; i >=0; i--) {
     bullet = bullets[i];
+    bullet.x += bullet.vx;
+    bullet.y += bullet.vy;
     strokeWeight(0);
     fill("yellow");
-    bullet.x += 10
     rect(bullet.x, bullet.y, 10.5, 5.5);
   }
 }
 
 function mousePressed() {
+  let angle = atan2(mouseY - player.y, mouseX - player.x);
   let bullet = {
-    x: player.x,
-    y: player.y
-  }
-
+    x: player.x + cos(angle) * 25,
+    y: player.y + sin(angle) * 25,
+    vx: cos(angle) * 10,
+    vy: sin(angle) * 10
+  };
   bullets.push(bullet);
 }
